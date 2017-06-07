@@ -16,7 +16,7 @@ func PasswdCommand(c *cli.Context) error {
 	parsedData := make(map[string]interface{})
 	if len(c.String("file")) > 0 {
 		outputUri = c.String("file")
-		err = uri.ReadMapFromURI(outputUri, uri.ReadDataFromEncryptedStream(oldPwd), parsedData)
+		err = uri.ReadMapFromURI(c, outputUri, uri.ReadDataFromEncryptedStream(oldPwd), parsedData)
 		if err != nil {
 			return err
 		}
@@ -25,17 +25,17 @@ func PasswdCommand(c *cli.Context) error {
 		sources := c.StringSlice("encrypted-input")
 		if len(sources) > 0 {
 			for _, src := range sources {
-				err = uri.ReadMapFromURI(src, uri.ReadDataFromEncryptedStream(oldPwd), parsedData)
+				err = uri.ReadMapFromURI(c, src, uri.ReadDataFromEncryptedStream(oldPwd), parsedData)
 				if err != nil {
 					return err
 				}
 			}
 		} else {
-			err = uri.ReadMapFromURI("", uri.ReadDataFromEncryptedStream(oldPwd), parsedData)
+			err = uri.ReadMapFromURI(c, "", uri.ReadDataFromEncryptedStream(oldPwd), parsedData)
 			if err != nil {
 				return err
 			}
 		}
 	}
-	return uri.WriteMapToURI(outputUri, parsedData, uri.WriteDataToEncryptedStream(newPwd))
+	return uri.WriteMapToURI(c, outputUri, parsedData, uri.WriteDataToEncryptedStream(newPwd))
 }

@@ -13,5 +13,5 @@ func InitCommand(c *cli.Context) error {
 		return err
 	}
 	parsedData := make(map[string]interface{})
-	return uri.WriteMapToURI(c.Args().Get(0), parsedData, uri.WriteDataToEncryptedStream(pwd))
+	return uri.WriteMapToURI(c, c.Args().Get(0), parsedData, uri.WriteDataToEncryptedStream(pwd))
 }

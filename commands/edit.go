@@ -35,7 +35,7 @@ func EditCommand(c *cli.Context) error {
 	if isEdit {
 		if len(c.String("file")) > 0 {
 			outputUri = c.String("file")
-			err = uri.ReadMapFromURI(outputUri, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
+			err = uri.ReadMapFromURI(c, outputUri, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
 			if err != nil {
 				return err
 			}
@@ -44,13 +44,13 @@ func EditCommand(c *cli.Context) error {
 			sources := c.StringSlice("encrypted-input")
 			if len(sources) > 0 {
 				for _, src := range sources {
-					err = uri.ReadMapFromURI(src, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
+					err = uri.ReadMapFromURI(c, src, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
 					if err != nil {
 						return err
 					}
 				}
 			} else {
-				err = uri.ReadMapFromURI("", uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
+				err = uri.ReadMapFromURI(c, "", uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
 				if err != nil {
 					return err
 				}
@@ -96,5 +96,5 @@ func EditCommand(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	return uri.WriteMapToURI(outputUri, parsedOutputData, uri.WriteDataToEncryptedStream(pwd))
+	return uri.WriteMapToURI(c, outputUri, parsedOutputData, uri.WriteDataToEncryptedStream(pwd))
 }

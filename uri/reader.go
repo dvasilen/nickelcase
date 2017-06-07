@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
 
 	"github.com/giacomocariello/nickelcase/crypt"
@@ -34,7 +35,7 @@ func ReadDataFromPlaintextStream() ReadStream {
 	}
 }
 
-func ReadMapFromURI(uri string, fnStream ReadStream, ret map[string]interface{}) error {
+func ReadMapFromURI(c *cli.Context, uri string, fnStream ReadStream, ret map[string]interface{}) error {
 	var err error
 	var data []byte
 	if uri == "" || uri == "-" {
@@ -59,6 +60,14 @@ func ReadMapFromURI(uri string, fnStream ReadStream, ret map[string]interface{})
 			data, err = fnStream(os.NewFile(uintptr(fd), parsedUrl.Opaque))
 		case "env":
 			data, err = fnStream(ioutil.NopCloser(bytes.NewBufferString(os.Getenv(parsedUrl.Opaque))))
+		case "http", "https":
+			httpClient := GetHTTPClient(c)
+			url := parsedUrl.String()
+			response, err := httpClient.Get(url)
+			if err != nil {
+				return fmt.Errorf("Error while trying to retrieve url \"%s\": %s", url, err)
+			}
+			data, err = fnStream(response.Body)
 		default:
 			return fmt.Errorf("Unsupported URI scheme in parameter: %s", uri)
 		}
@@ -73,7 +82,7 @@ func ReadMapFromURI(uri string, fnStream ReadStream, ret map[string]interface{})
 	return nil
 }
 
-func ReadDataFromURI(uri string, fnStream ReadStream) ([]byte, error) {
+func ReadDataFromURI(c *cli.Context, uri string, fnStream ReadStream) ([]byte, error) {
 	if uri == "" || uri == "-" {
 		return fnStream(os.Stdin)
 	} else {
@@ -96,6 +105,14 @@ func ReadDataFromURI(uri string, fnStream ReadStream) ([]byte, error) {
 			return fnStream(os.NewFile(uintptr(fd), parsedUrl.Opaque))
 		case "env":
 			return fnStream(ioutil.NopCloser(bytes.NewBufferString(os.Getenv(parsedUrl.Opaque))))
+		case "http", "https":
+			httpClient := GetHTTPClient(c)
+			url := parsedUrl.String()
+			response, err := httpClient.Get(url)
+			if err != nil {
+				return []byte{}, fmt.Errorf("Error while trying to retrieve url \"%s\": %s", url, err)
+			}
+			return fnStream(response.Body)
 		default:
 			return []byte{}, fmt.Errorf("Unsupported URI scheme in parameter: %s", uri)
 		}

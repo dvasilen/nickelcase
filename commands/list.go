@@ -19,13 +19,13 @@ func ListCommand(c *cli.Context) error {
 	sources := c.StringSlice("encrypted-input")
 	if len(sources) > 0 {
 		for _, src := range sources {
-			err = uri.ReadMapFromURI(src, uri.ReadDataFromEncryptedStream(pwd), parsedData)
+			err = uri.ReadMapFromURI(c, src, uri.ReadDataFromEncryptedStream(pwd), parsedData)
 			if err != nil {
 				return err
 			}
 		}
 	} else {
-		err = uri.ReadMapFromURI("", uri.ReadDataFromEncryptedStream(pwd), parsedData)
+		err = uri.ReadMapFromURI(c, "", uri.ReadDataFromEncryptedStream(pwd), parsedData)
 		if err != nil {
 			return err
 		}
@@ -36,5 +36,5 @@ func ListCommand(c *cli.Context) error {
 			return err
 		}
 	}
-	return uri.WriteDataToURI(c.String("output"), buf.Bytes(), uri.WriteDataToPlaintextStream)
+	return uri.WriteDataToURI(c, c.String("output"), buf.Bytes(), uri.WriteDataToPlaintextStream)
 }

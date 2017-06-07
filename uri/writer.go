@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
 
 	"github.com/giacomocariello/nickelcase/crypt"
@@ -42,7 +43,7 @@ func WriteMapToStream(stream io.WriteCloser, ret map[string]interface{}, fn Writ
 	return fn(stream, data)
 }
 
-func WriteMapToURI(uri string, ret map[string]interface{}, fn WriteDataToStream) error {
+func WriteMapToURI(c *cli.Context, uri string, ret map[string]interface{}, fn WriteDataToStream) error {
 	if uri == "" || uri == "-" {
 		return WriteMapToStream(os.Stdout, ret, fn)
 	}
@@ -68,7 +69,7 @@ func WriteMapToURI(uri string, ret map[string]interface{}, fn WriteDataToStream)
 	}
 }
 
-func GetOutputStream(uri string) (io.WriteCloser, error) {
+func GetOutputStreamFromURI(c *cli.Context, uri string) (io.WriteCloser, error) {
 	if uri == "" || uri == "-" {
 		return os.Stdout, nil
 	}
@@ -90,8 +91,8 @@ func GetOutputStream(uri string) (io.WriteCloser, error) {
 	}
 }
 
-func WriteDataToURI(uri string, data []byte, fn WriteDataToStream) error {
-	stream, err := GetOutputStream(uri)
+func WriteDataToURI(c *cli.Context, uri string, data []byte, fn WriteDataToStream) error {
+	stream, err := GetOutputStreamFromURI(c, uri)
 	if err != nil {
 		return err
 	}
