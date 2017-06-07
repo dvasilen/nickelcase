@@ -17,7 +17,7 @@ func GetCommand(c *cli.Context) error {
 	if len(args) < 1 {
 		return fmt.Errorf("Invalid number of arguments")
 	}
-	pwd, err := passwd.GetPassword(c.String("password"))
+	pwd, err := passwd.GetPassword(c, c.String("password"))
 	if err != nil {
 		return err
 	}

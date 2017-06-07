@@ -12,7 +12,7 @@ import (
 
 // ListCommand : list keys contained in nickelcase maps
 func ListCommand(c *cli.Context) error {
-	pwd, err := passwd.GetPassword(c.String("password"))
+	pwd, err := passwd.GetPassword(c, c.String("password"))
 	if err != nil {
 		return err
 	}

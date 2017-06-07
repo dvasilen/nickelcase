@@ -23,7 +23,7 @@ func ExecCommand(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	pwd, err := passwd.GetPassword(c.String("password"))
+	pwd, err := passwd.GetPassword(c, c.String("password"))
 	if err != nil {
 		return err
 	}

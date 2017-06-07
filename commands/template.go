@@ -12,7 +12,7 @@ import (
 
 // TemplateCommand : compute files from templates using nickelcase maps as context
 func TemplateCommand(c *cli.Context) error {
-	pwd, err := passwd.GetPassword(c.String("password"))
+	pwd, err := passwd.GetPassword(c, c.String("password"))
 	if err != nil {
 		return err
 	}

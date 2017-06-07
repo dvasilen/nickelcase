@@ -7,45 +7,50 @@ import (
 	"syscall"
 
 	"github.com/nbutton23/zxcvbn-go"
+	"github.com/urfave/cli"
 	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
-func GetPassword(src string) (password string, err error) {
+
+// GetPassword : read current password from TTY or URI
+func GetPassword(c *cli.Context, src string) (password string, err error) {
 	fdout := getOutputTTY()
 	if src == "" {
-		password, err = ReadPasswordFromTTY("Password: ", fdout)
+		password, err = readPasswordFromTTY("Password: ", fdout)
 	} else {
-		password, err = uri.SaveToPasswordURISource(src)
+		password, err = uri.ReadFromPasswordURI(c, src)
 	}
 	return
 }
 
-func GetNewPassword(src string) (password string, err error) {
+// GetPassword : read new password from TTY or URI
+func GetNewPassword(c *cli.Context, src string) (password string, err error) {
 	fdout := getOutputTTY()
 	if src == "" {
-		password, err = ReadNewPasswordFromTTY(fdout)
+		password, err = readNewPasswordFromTTY(fdout)
 	} else {
-		password, err = uri.SaveToPasswordURISource(src)
+		password, err = uri.ReadFromPasswordURI(c, src)
 	}
 	return
 }
 
-func GetPasswordChange(oldSrc, newSrc string) (oldPassword string, newPassword string, err error) {
+// GetPassword : read password change from TTY or URI
+func GetPasswordChange(c *cli.Context, oldSrc, newSrc string) (oldPassword string, newPassword string, err error) {
 	fdout := getOutputTTY()
 	if oldSrc == "" {
-		oldPassword, err = ReadPasswordFromTTY("Old password: ", fdout)
+		oldPassword, err = readPasswordFromTTY("Old password: ", fdout)
 	} else {
-		oldPassword, err = uri.SaveToPasswordURISource(oldSrc)
+		oldPassword, err = uri.ReadFromPasswordURI(c, oldSrc)
 	}
 	if err != nil {
 		return
 	}
 	if newSrc == "" {
-		newPassword, err = ReadNewPasswordFromTTY(fdout)
+		newPassword, err = readNewPasswordFromTTY(fdout)
 	} else {
-		newPassword, err = uri.SaveToPasswordURISource(newSrc)
+		newPassword, err = uri.ReadFromPasswordURI(c, newSrc)
 	}
 	return
 }
@@ -59,7 +64,7 @@ func getOutputTTY() int {
 	return -1
 }
 
-func ReadPasswordFromTTY(prompt string, fdout int) (string, error) {
+func readPasswordFromTTY(prompt string, fdout int) (string, error) {
 	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
 	if err != nil {
 		return "", fmt.Errorf("Cannot prompt for password: cannot open /dev/tty: %s", err)
@@ -85,14 +90,14 @@ func ReadPasswordFromTTY(prompt string, fdout int) (string, error) {
 	return strings.TrimRight(string(password), "\r\n"), nil
 }
 
-func ReadNewPasswordFromTTY(fdout int) (string, error) {
+func readNewPasswordFromTTY(fdout int) (string, error) {
 	i := 0
 	for {
-		newPassword, err := ReadPasswordFromTTY("New password: ", fdout)
+		newPassword, err := readPasswordFromTTY("New password: ", fdout)
 		if err != nil {
 			return "", err
 		}
-		retypePassword, err := ReadPasswordFromTTY("Retype password: ", fdout)
+		retypePassword, err := readPasswordFromTTY("Retype password: ", fdout)
 		if err != nil {
 			return "", err
 		}

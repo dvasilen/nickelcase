@@ -15,12 +15,12 @@ func CatCommand(c *cli.Context) error {
 	encryptedSources := c.StringSlice("encrypted-input")
 	isLoad := c.Command.FullName() == "load"
 	if len(encryptedSources) > 0 {
-		pwd, err = passwd.GetPassword(c.String("password"))
+		pwd, err = passwd.GetPassword(c, c.String("password"))
 		if err != nil {
 			return err
 		}
 	} else if isLoad {
-		pwd, err = passwd.GetNewPassword(c.String("password"))
+		pwd, err = passwd.GetNewPassword(c, c.String("password"))
 		if err != nil {
 			return err
 		}

@@ -9,6 +9,8 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+
+	"github.com/urfave/cli"
 )
 
 func readPasswordStream(stream io.ReadCloser) (string, error) {
@@ -22,7 +24,7 @@ func readPasswordStream(stream io.ReadCloser) (string, error) {
 	return scanner.Text(), nil
 }
 
-func SaveToPasswordURISource(uri string) (string, error) {
+func ReadFromPasswordURI(c *cli.Context, uri string) (string, error) {
 	if uri == "" || uri == "-" {
 		return readPasswordStream(os.Stdin)
 	}

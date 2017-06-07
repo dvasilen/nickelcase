@@ -17,7 +17,7 @@ func SetCommand(c *cli.Context) error {
 	}
 	key := args[0]
 	value := args[1]
-	pwd, err := passwd.GetPassword(c.String("password"))
+	pwd, err := passwd.GetPassword(c, c.String("password"))
 	if err != nil {
 		return err
 	}
