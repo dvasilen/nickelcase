@@ -10,7 +10,6 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
-
 // TemplateCommand : compute files from templates using nickelcase maps as context
 func TemplateCommand(c *cli.Context) error {
 	pwd, err := passwd.GetPassword(c.String("password"))

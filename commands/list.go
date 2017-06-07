@@ -10,7 +10,6 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
-
 // ListCommand : list keys contained in nickelcase maps
 func ListCommand(c *cli.Context) error {
 	pwd, err := passwd.GetPassword(c.String("password"))
