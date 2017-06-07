@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-func GetHTTPClient(c *cli.Context) *http.Client {
+func getHTTPClient(c *cli.Context) *http.Client {
 	return &http.Client{
 		Timeout: time.Second * 10,
 	}

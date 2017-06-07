@@ -61,7 +61,7 @@ func ReadMapFromURI(c *cli.Context, uri string, fnStream ReadStream, ret map[str
 		case "env":
 			data, err = fnStream(ioutil.NopCloser(bytes.NewBufferString(os.Getenv(parsedUrl.Opaque))))
 		case "http", "https":
-			httpClient := GetHTTPClient(c)
+			httpClient := getHTTPClient(c)
 			url := parsedUrl.String()
 			response, err := httpClient.Get(url)
 			if err != nil {
@@ -106,7 +106,7 @@ func ReadDataFromURI(c *cli.Context, uri string, fnStream ReadStream) ([]byte, e
 		case "env":
 			return fnStream(ioutil.NopCloser(bytes.NewBufferString(os.Getenv(parsedUrl.Opaque))))
 		case "http", "https":
-			httpClient := GetHTTPClient(c)
+			httpClient := getHTTPClient(c)
 			url := parsedUrl.String()
 			response, err := httpClient.Get(url)
 			if err != nil {

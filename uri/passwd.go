@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func ReadPasswordStream(stream io.ReadCloser) (string, error) {
+func readPasswordStream(stream io.ReadCloser) (string, error) {
 	defer stream.Close()
 	scanner := bufio.NewScanner(stream)
 	if !scanner.Scan() {
@@ -24,7 +24,7 @@ func ReadPasswordStream(stream io.ReadCloser) (string, error) {
 
 func SaveToPasswordURISource(uri string) (string, error) {
 	if uri == "" || uri == "-" {
-		return ReadPasswordStream(os.Stdin)
+		return readPasswordStream(os.Stdin)
 	}
 	parsedUrl, err := url.Parse(uri)
 	if err != nil {
@@ -36,15 +36,15 @@ func SaveToPasswordURISource(uri string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		return ReadPasswordStream(fh)
+		return readPasswordStream(fh)
 	case "fd":
 		fd, err := strconv.Atoi(parsedUrl.Opaque)
 		if err != nil {
 			return "", fmt.Errorf("Invalid file descriptor number: %s", err)
 		}
-		return ReadPasswordStream(os.NewFile(uintptr(fd), parsedUrl.Opaque))
+		return readPasswordStream(os.NewFile(uintptr(fd), parsedUrl.Opaque))
 	case "env":
-		return ReadPasswordStream(ioutil.NopCloser(bytes.NewBufferString(os.Getenv(parsedUrl.Opaque))))
+		return readPasswordStream(ioutil.NopCloser(bytes.NewBufferString(os.Getenv(parsedUrl.Opaque))))
 	default:
 		return "", fmt.Errorf("Unsupported URI scheme in parameter: %s", uri)
 	}
