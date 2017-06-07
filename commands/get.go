@@ -11,6 +11,8 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+
+// GetCommand : get value of a nickelcase map key
 func GetCommand(c *cli.Context) error {
 	args := c.Args()
 	if len(args) < 1 {

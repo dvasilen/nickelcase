@@ -14,6 +14,7 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+// EditCommand : Open a nickelcase with a text-editor
 func EditCommand(c *cli.Context) error {
 	isEdit := c.Command.FullName() == "edit"
 	editor := c.String("editor")

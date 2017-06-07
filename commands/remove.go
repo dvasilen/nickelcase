@@ -9,6 +9,8 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+
+// RemoveCommand : remove keys from nickelcases.
 func RemoveCommand(c *cli.Context) error {
 	args := c.Args()
 	if len(args) < 1 {

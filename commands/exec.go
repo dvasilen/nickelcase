@@ -13,6 +13,7 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+// ExecCommand : run a command with execve(2)
 func ExecCommand(c *cli.Context) error {
 	args := c.Args()
 	if len(args) < 1 {

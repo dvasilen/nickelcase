@@ -9,6 +9,8 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+
+// SetCommand : set a key in a nickelcase
 func SetCommand(c *cli.Context) error {
 	args := c.Args()
 	if len(args) != 2 {

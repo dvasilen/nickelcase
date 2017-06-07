@@ -7,6 +7,8 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+
+// PasswdCommand : change password of a nickelcase
 func PasswdCommand(c *cli.Context) error {
 	oldPwd, newPwd, err := passwd.GetPasswordChange(c.String("password"), c.String("new-password"))
 	if err != nil {

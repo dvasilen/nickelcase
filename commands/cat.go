@@ -7,6 +7,7 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+// CatCommand : load/dump nickelcase archives
 func CatCommand(c *cli.Context) error {
 	var pwd string
 	var err error
