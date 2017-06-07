@@ -27,13 +27,13 @@ func GenerateKeys(password, salt []byte) ([]byte, []byte, []byte) {
 	return key[:KEYLENGTH], key[KEYLENGTH:(KEYLENGTH * 2)], key[(KEYLENGTH * 2) : (KEYLENGTH*2)+aes.BlockSize]
 }
 
-func PKCS7Pad(src []byte) []byte {
+func pkcs7Pad(src []byte) []byte {
 	padding := aes.BlockSize - (len(src) % aes.BlockSize)
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(src, padtext...)
 }
 
-func PKCS7Unpad(src []byte) ([]byte, error) {
+func pkcs7Unpad(src []byte) ([]byte, error) {
 	length := len(src)
 	unpadding := int(src[length-1])
 	if unpadding > length {
@@ -54,7 +54,7 @@ func AnsibleEncrypt(plaintext []byte, password string) ([]byte, error) {
 		return []byte{}, err
 	}
 	stream := cipher.NewCTR(block, iv)
-	paddedPlaintext := PKCS7Pad(plaintext)
+	paddedPlaintext := pkcs7Pad(plaintext)
 	ciphertext := make([]byte, len(paddedPlaintext))
 	stream.XORKeyStream(ciphertext, paddedPlaintext)
 
@@ -126,7 +126,7 @@ func AnsibleDecrypt(encrypted []byte, password string) ([]byte, error) {
 	paddedPlaintext := make([]byte, len(ciphertext))
 	stream := cipher.NewCTR(block, iv)
 	stream.XORKeyStream(paddedPlaintext, ciphertext)
-	plaintext, err := PKCS7Unpad(paddedPlaintext)
+	plaintext, err := pkcs7Unpad(paddedPlaintext)
 	if err != nil {
 		return []byte{}, err
 	}

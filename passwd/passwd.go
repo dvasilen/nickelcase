@@ -13,7 +13,7 @@ import (
 )
 
 func GetPassword(src string) (password string, err error) {
-	fdout := GetOutputStream()
+	fdout := getOutputTTY()
 	if src == "" {
 		password, err = ReadPasswordFromTTY("Password: ", fdout)
 	} else {
@@ -23,7 +23,7 @@ func GetPassword(src string) (password string, err error) {
 }
 
 func GetNewPassword(src string) (password string, err error) {
-	fdout := GetOutputStream()
+	fdout := getOutputTTY()
 	if src == "" {
 		password, err = ReadNewPasswordFromTTY(fdout)
 	} else {
@@ -33,7 +33,7 @@ func GetNewPassword(src string) (password string, err error) {
 }
 
 func GetPasswordChange(oldSrc, newSrc string) (oldPassword string, newPassword string, err error) {
-	fdout := GetOutputStream()
+	fdout := getOutputTTY()
 	if oldSrc == "" {
 		oldPassword, err = ReadPasswordFromTTY("Old password: ", fdout)
 	} else {
@@ -50,7 +50,7 @@ func GetPasswordChange(oldSrc, newSrc string) (oldPassword string, newPassword s
 	return
 }
 
-func GetOutputStream() int {
+func getOutputTTY() int {
 	if terminal.IsTerminal(syscall.Stdout) {
 		return syscall.Stdout
 	} else if terminal.IsTerminal(syscall.Stderr) {
