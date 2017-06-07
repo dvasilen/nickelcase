@@ -53,7 +53,6 @@ func CatCommand(c *cli.Context) error {
 	}
 	if isLoad {
 		return uri.WriteMapToURI(c, c.Args().Get(0), parsedData, uri.WriteDataToEncryptedStream(pwd))
-	} else {
-		return uri.WriteMapToURI(c, c.Args().Get(0), parsedData, uri.WriteDataToPlaintextStream)
 	}
+	return uri.WriteMapToURI(c, c.Args().Get(0), parsedData, uri.WriteDataToPlaintextStream)
 }

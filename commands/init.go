@@ -7,6 +7,7 @@ import (
 	"github.com/giacomocariello/nickelcase/uri"
 )
 
+// InitCommand : initialize an empty nickelcase
 func InitCommand(c *cli.Context) error {
 	pwd, err := passwd.GetNewPassword(c.String("password"))
 	if err != nil {
