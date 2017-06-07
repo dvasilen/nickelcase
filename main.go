@@ -27,6 +27,10 @@ const (
 	FLAG_TEMPLATE_URI
 )
 
+const DESCRIPTION =
+`nickelcase allows the user to store, modify and retrieve secrets from
+   encrypted files or streams with "Ansible Vault" file-format.`
+
 func getFlagSlice(flagMap map[byte]cli.Flag, flagBytes []byte) []cli.Flag {
 	flagSlice := make([]cli.Flag, len(flagBytes))
 	for i := range flagBytes {
@@ -39,6 +43,14 @@ func main() {
 	app := cli.NewApp()
 	app.Version = version
 	app.Usage = "a command-line utility to manage secrets."
+	app.Authors = []cli.Author{
+		{
+			Name:  "Giacomo Cariello",
+			Email: "g.cariello@ieee.org",
+		},
+	}
+        app.Description = DESCRIPTION
+        app.Copyright = "Copyright 2017, Giacomo Cariello.\n   Licensed under the Apache License, Version 2.0."
 	flags := map[byte]cli.Flag{
 		FLAG_PASSWORD_SRC: cli.StringFlag{
 			Name:  "p,password",

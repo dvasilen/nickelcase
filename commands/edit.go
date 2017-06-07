@@ -15,7 +15,7 @@ import (
 )
 
 func EditCommand(c *cli.Context) error {
-        isEdit := c.Command.FullName() == "edit"
+	isEdit := c.Command.FullName() == "edit"
 	editor := c.String("editor")
 	if editor == "" {
 		editor = os.Getenv("VISUAL")
@@ -32,31 +32,31 @@ func EditCommand(c *cli.Context) error {
 	}
 	var outputUri string
 	parsedInputData := make(map[string]interface{})
-        if isEdit {
-	    if len(c.String("file")) > 0 {
-	    	outputUri = c.String("file")
-	    	err = uri.ReadMapFromURI(outputUri, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
-	    	if err != nil {
-	    		return err
-	    	}
-	    } else {
-	    	outputUri = c.String("output")
-	    	sources := c.StringSlice("encrypted-input")
-	    	if len(sources) > 0 {
-	    		for _, src := range sources {
-	    			err = uri.ReadMapFromURI(src, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
-	    			if err != nil {
-	    				return err
-	    			}
-	    		}
-	    	} else {
-	    		err = uri.ReadMapFromURI("", uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
-	    		if err != nil {
-	    			return err
-	    		}
-	    	}
-	    }
-        }
+	if isEdit {
+		if len(c.String("file")) > 0 {
+			outputUri = c.String("file")
+			err = uri.ReadMapFromURI(outputUri, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
+			if err != nil {
+				return err
+			}
+		} else {
+			outputUri = c.String("output")
+			sources := c.StringSlice("encrypted-input")
+			if len(sources) > 0 {
+				for _, src := range sources {
+					err = uri.ReadMapFromURI(src, uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
+					if err != nil {
+						return err
+					}
+				}
+			} else {
+				err = uri.ReadMapFromURI("", uri.ReadDataFromEncryptedStream(pwd), parsedInputData)
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
 	tmpData, err := yaml.Marshal(&parsedInputData)
 	if err != nil {
 		return err

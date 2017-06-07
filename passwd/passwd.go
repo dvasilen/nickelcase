@@ -1,8 +1,8 @@
 package passwd
 
 import (
-        "os"
 	"fmt"
+	"os"
 	"strings"
 	"syscall"
 
@@ -64,7 +64,7 @@ func ReadPasswordFromTTY(prompt string, fdout int) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Cannot prompt for password: cannot open /dev/tty: %s", err)
 	}
-        defer tty.Close()
+	defer tty.Close()
 	if fdout > 0 {
 		if _, err := syscall.Write(fdout, []byte(prompt)); err != nil {
 			return "", err
