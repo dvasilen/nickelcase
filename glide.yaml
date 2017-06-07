@@ -1,0 +1,19 @@
+package: github.com/giacomocariello/nickelcase
+import:
+- package: github.com/nbutton23/zxcvbn-go
+  subpackages:
+  - adjacency
+  - data
+  - entropy
+  - frequency
+  - match
+  - matching
+  - scoring
+  - utils/math
+- package: github.com/urfave/cli
+- package: golang.org/x/crypto
+  subpackages:
+  - pbkdf2
+  - ssh
+  - ssh/terminal
+- package: gopkg.in/yaml.v2

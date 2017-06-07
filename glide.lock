@@ -1,0 +1,25 @@
+hash: 7754018353cf0ed151305092b5913bb722bcab97503d7ad5c94db3c5dd702ea0
+updated: 2017-06-07T10:25:04.789514002+02:00
+imports:
+- name: github.com/nbutton23/zxcvbn-go
+  version: a22cb81b2ecdde8b68e9ffb8824731cbf88e1de4
+  subpackages:
+  - adjacency
+  - data
+  - entropy
+  - frequency
+  - match
+  - matching
+  - scoring
+  - utils/math
+- name: github.com/urfave/cli
+  version: 0bdeddeeb0f650497d603c4ad7b20cfe685682f6
+- name: golang.org/x/crypto
+  version: beef0f4390813b96e8e68fd78570396d0f4751fc
+  subpackages:
+  - pbkdf2
+  - ssh
+  - ssh/terminal
+- name: gopkg.in/yaml.v2
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
+testImports: []
